@@ -8,18 +8,18 @@ incidents_data = []
 # Read the CSV file and store data in a list
 with open(input_file, 'r', newline='') as csvfile:
     reader = csv.reader(csvfile)
-    # header row and add Status
-    headers = next(reader) + ['Status']
+    headers = next(reader)
+    headers.append('Status')    
 
-     # Read each row and append to data list
+     # Read remaining rows
     for row in reader:
         incidents_data.append(row)
     
-    # Status coloumn with default value Pending to each row
-    modified_data = []
+# Check if data was read successfully
+if incidents_data:
+    # Add status column with "Pending" to each row
     for row in incidents_data:
-        modified_row = row + ['Pending']
-        modified_data.append(row)
+        row.append('Pending')
 
     # Modified data to a new csv file
     with open(output_file, 'w' , newline='') as csvfile:
@@ -29,10 +29,12 @@ with open(input_file, 'r', newline='') as csvfile:
         writer.writerow(headers)
 
         # Write all rows
-        writer.writerow(modified_data)
+        writer.writerow(incidents_data)
     
     print(f"Successfully processed {len(incidents_data)} security incidents. ")
     print(f"Modified data saved to {output_file}")
+else:
+    print(f"No data found in {input_file} .")
 
 
 
